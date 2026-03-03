@@ -24,7 +24,7 @@ class EdukasiController extends Controller
     {
         $request->validate([
             'nama'      => 'required|string',
-            'kategori'  => 'required|in:hama,penyakit',
+            'kategori'  => 'required|in:hama,penyakit,pertanian_dasar',
             'deskripsi' => 'required|string',
             'gambar'    => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'solusi'    => 'nullable|string',
@@ -51,7 +51,7 @@ class EdukasiController extends Controller
 
         $request->validate([
             'nama'      => 'required|string',
-            'kategori'  => 'required|in:hama,penyakit',
+            'kategori' => 'required|in:hama,penyakit,pertanian_dasar',
             'deskripsi' => 'required|string',
             'gambar'    => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'solusi'    => 'nullable|string',
