@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->enum('kategori', ['hama', 'penyakit']);
             $table->text('deskripsi');
-            $table->string('gambar'); 
+            $table->string('gambar');
             $table->timestamps();
         });
     }
