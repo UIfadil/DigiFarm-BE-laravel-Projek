@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\EdukasiController;
 use App\Http\Controllers\Api\Admin\VideoEdukasiController;
 use App\Http\Controllers\Api\Admin\SoalKuisController;
+use App\Http\Controllers\Api\KuisController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -34,5 +35,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/soal-kuis', [SoalKuisController::class, 'store']);
     Route::post('/admin/soal-kuis/{id}/update', [SoalKuisController::class, 'update']);
     Route::delete('/admin/soal-kuis/{id}', [SoalKuisController::class, 'destroy']);
+
+    // ─── Fitur Kuis (User) ───
+    Route::get('/kuis/soal', [KuisController::class, 'getSoal']);           // ambil soal
+    Route::post('/kuis/selesai', [KuisController::class, 'selesai']);        // simpan hasil
+    Route::get('/kuis/ranking', [KuisController::class, 'ranking']);         // papan peringkat
+    Route::get('/kuis/profil-exp', [KuisController::class, 'profilExp']);    // data exp user
 
 });
