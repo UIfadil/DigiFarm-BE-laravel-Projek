@@ -1,23 +1,22 @@
 <?php
-
 namespace App\Models;
 
-// 1. Pastikan baris ini ada di bagian atas
-use Laravel\Sanctum\HasApiTokens; 
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
-    // 2. Tambahkan HasApiTokens di dalam baris use ini
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role', // Pastikan role juga ada di sini jika Anda menggunakannya
+        'role',
+        'foto_profil', // ✅ tambah ini
     ];
 
     protected $hidden = [
@@ -29,7 +28,21 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
+
+    // Jika foto ada  → kembalikan full URL storage
+    // Jika foto null → kembalikan null (frontend pakai avatar default)
+    public function getFotoProfilUrlAttribute(): ?string
+    {
+        if (!$this->foto_profil) return null;
+        
+        // ✅ Pakai URL dari request yang masuk, bukan APP_URL
+        $baseUrl = request()->getSchemeAndHttpHost();
+        return $baseUrl . '/storage/' . $this->foto_profil;
+    }
+    protected $with = [];
+
+    protected $appends = ['foto_profil_url'];
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Admin\VideoEdukasiController;
 use App\Http\Controllers\Api\Admin\SoalKuisController;
 use App\Http\Controllers\Api\KuisController;
 use App\Http\Controllers\Api\EdukasiController as UserEdukasiController;
+use App\Http\Controllers\Api\ProfilController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -46,5 +47,12 @@ Route::middleware('auth:sanctum')->group(function () {
     // ── Edukasi (user) ──
     Route::get('/edukasi', [UserEdukasiController::class, 'index']);
     Route::get('/edukasi/{id}', [UserEdukasiController::class, 'show']);
+
+
+
+    // ── Profil (user) ──
+    Route::get('/profil', [ProfilController::class, 'show']);
+    Route::post('/profil/update', [ProfilController::class, 'update']);
+    Route::post('/profil/hapus-foto', [ProfilController::class, 'hapusFoto']);
 
 });
