@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\Admin\SoalKuisController;
 use App\Http\Controllers\Api\KuisController;
 use App\Http\Controllers\Api\EdukasiController as UserEdukasiController;
 use App\Http\Controllers\Api\ProfilController;
+use App\Http\Controllers\PredictionController;
+use App\Http\Controllers\Api\HistoryController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -55,4 +57,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profil/update', [ProfilController::class, 'update']);
     Route::post('/profil/hapus-foto', [ProfilController::class, 'hapusFoto']);
 
+    // -- Scan AI --
+    Route::post('/predict', [PredictionController::class, 'predict']);
+    // Route::get('/histories', [HistoryController::class, 'index']);
+    Route::get('/histories/{id}', [PredictionController::class, 'show']);
+    Route::get('/histories', [PredictionController::class, 'histories']);
+    Route::delete('/histories/{id}', [HistoryController::class, 'destroy']);
+    
+
+});
+
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
+
+Route::get('/limits', function () {
+    return [
+        'upload_max_filesize' => ini_get('upload_max_filesize'),
+        'post_max_size' => ini_get('post_max_size'),
+    ];
 });

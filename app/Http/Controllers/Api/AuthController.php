@@ -5,23 +5,48 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller {
-    public function register(Request $request) {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'user', // Otomatis jadi user biasa saat daftar
-        ]);
-        return response()->json(['message' => 'Berhasil Daftar'], 201);
-    }
+
+    public function register(Request $request)
+{
+    $request->validate(
+        [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+        ],
+        [
+            'name.required' => 'Nama wajib diisi',
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'email.unique' => 'Email sudah digunakan',
+            'password.required' => 'Password wajib diisi',
+        ]
+    );
+
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'user',
+    ]);
+
+    return response()->json([
+        'message' => 'Registrasi Berhasil'
+    ], 201);
+}
 
     public function login(Request $request) {
         // 1. Validasi input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+        ],
+        [
+            'email.required' => 'Email wajib diisi',
+            'password.required' => 'Password wajib diisi',
         ]);
 
         // 2. Cari user di database
